@@ -11,68 +11,67 @@ ucs_password: C1sco12345
 ucs_state: present
 
 # Docker EE CVD LAN related settings
-ucs_lan_data:
-  ip_pools:
-  - name: ext-mgmt
-    first_addr: 192.168.156.101
-    last_addr: 192.168.156.116
-    subnet_mask: 255.255.255.0
-    default_gw: 192.168.156.1
-  mac_pools:
-  - name: MAC-Pool-A
-    order: sequential
-    first_addr: 00:25:B5:48:0A:00
-    last_addr: 00:25:B5:48:0A:3F
-  - name: MAC-Pool-B
-    order: sequential
-    first_addr: 00:25:B5:48:0B:00
-    last_addr: 00:25:B5:48:0B:3F
-  vlans:
-  - name: Native-VLAN
-    id: '2'
-    native: 'yes'
+ucs_ip_pools:
+- name: ext-mgmt
+  first_addr: 192.168.156.101
+  last_addr: 192.168.156.116
+  subnet_mask: 255.255.255.0
+  default_gw: 192.168.156.1
+ucs_mac_pools:
+- name: MAC-Pool-A
+  order: sequential
+  first_addr: 00:25:B5:48:0A:00
+  last_addr: 00:25:B5:48:0A:3F
+- name: MAC-Pool-B
+  order: sequential
+  first_addr: 00:25:B5:48:0B:00
+  last_addr: 00:25:B5:48:0B:3F
+ucs_vlans:
+- name: Native-VLAN
+  id: '2'
+  native: 'yes'
+- name: Container-MGMT-VLAN
+  id: '3'
+- name: Container-MGMT-NFS
+  id: '4'
+- name: Container-TNT-A-NFS
+  id: '5'
+ucs_vnic_templates:
+- name: Cntr-Template
+  fabric: A-B
+  template_type: updating-template
+  mac_pool: MAC-Pool-A
+  network_control_policy: Enable-CDP-LLDP
+  vlans_list:
   - name: Container-MGMT-VLAN
-    id: '3'
+    native: 'yes'
+- name: Container-NFS-A
+  fabric: A
+  redundancy_type: primary
+  peer_redundancy_templ: Container-NFS-B
+  template_type: updating-template
+  mtu: '9000'
+  mac_pool: MAC-Pool-A
+  network_control_policy: Enable-CDP-LLDP
+  vlans_list:
   - name: Container-MGMT-NFS
-    id: '4'
+    native: 'yes'
   - name: Container-TNT-A-NFS
-    id: '5'
-  vnic_templates:
-  - name: Cntr-Template
-    fabric: A-B
-    template_type: updating-template
-    mac_pool: MAC-Pool-A
-    network_control_policy: Enable-CDP-LLDP
-    vlans_list:
-    - name: Container-MGMT-VLAN
-      native: 'yes'
-  - name: Container-NFS-A
-    fabric: A
-    redundancy_type: primary
-    peer_redundancy_templ: Container-NFS-B
-    template_type: updating-template
-    mtu: '9000'
-    mac_pool: MAC-Pool-A
-    network_control_policy: Enable-CDP-LLDP
-    vlans_list:
-    - name: Container-MGMT-NFS
-      native: 'yes'
-    - name: Container-TNT-A-NFS
-      native: 'no'
-  - name: Container-NFS-B
-    fabric: B
-    redundancy_type: secondary
-    peer_redundancy_templ: Container-NFS-A
-    mac_pool: MAC-Pool-B
-  lan_connectivity_policies:
-  - name: Cntr-FC-Boot
-    vnic_list:
-    - name: eno1
-      vnic_template: Cntr-Template
-      adapter_policy: Linux
-    - name: eno2
-      vnic_template: Container-NFS-A
-      adapter_policy: Linux
-    - name: eno3
-      vnic_template: Container-NFS-B
-      adapter_policy: Linux
+    native: 'no'
+- name: Container-NFS-B
+  fabric: B
+  redundancy_type: secondary
+  peer_redundancy_templ: Container-NFS-A
+  mac_pool: MAC-Pool-B
+ucs_lan_connectivity_policies:
+- name: Cntr-FC-Boot
+  vnic_list:
+  - name: eno1
+    vnic_template: Cntr-Template
+    adapter_policy: Linux
+  - name: eno2
+    vnic_template: Container-NFS-A
+    adapter_policy: Linux
+  - name: eno3
+    vnic_template: Container-NFS-B
+    adapter_policy: Linux
