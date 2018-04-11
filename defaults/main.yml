@@ -11,6 +11,69 @@ ucs_password: C1sco12345
 ucs_state: present
 
 # Docker EE CVD LAN related settings
+ucs_port_channels:
+- objects:
+  - {
+        "module": "ucsmsdk.mometa.fabric.FabricEthLanPc",
+        "class": "FabricEthLanPc",
+        "properties": {
+            "parent_mo_or_dn": "fabric/lan/A",
+            "admin_speed": "10gbps",
+            "name": "",
+            "port_id": "12"
+        },
+        "children": [
+            {
+                "module": "ucsmsdk.mometa.fabric.FabricEthLanPcEp",
+                "class": "FabricEthLanPcEp",
+                "properties": {
+                    "name": "",
+                    "port_id": "33",
+                    "slot_id": "1"
+                },
+            },
+            {
+                "module": "ucsmsdk.mometa.fabric.FabricEthLanPcEp",
+                "class": "FabricEthLanPcEp",
+                "properties": {
+                    "name": "",
+                    "port_id": "34",
+                    "slot_id": "1"
+                },
+            },
+        ]
+    }
+- objects:
+  - {
+        "module": "ucsmsdk.mometa.fabric.FabricEthLanPc",
+        "class": "FabricEthLanPc",
+        "properties": {
+            "parent_mo_or_dn": "fabric/lan/B",
+            "admin_speed": "10gbps",
+            "name": "",
+            "port_id": "13"
+        },
+        "children": [
+            {
+                "module": "ucsmsdk.mometa.fabric.FabricEthLanPcEp",
+                "class": "FabricEthLanPcEp",
+                "properties": {
+                    "name": "",
+                    "port_id": "33",
+                    "slot_id": "1"
+                },
+            },
+            {
+                "module": "ucsmsdk.mometa.fabric.FabricEthLanPcEp",
+                "class": "FabricEthLanPcEp",
+                "properties": {
+                    "name": "",
+                    "port_id": "34",
+                    "slot_id": "1"
+                },
+            },
+        ]
+    }
 ucs_ip_pools:
 - name: ext-mgmt
   first_addr: 192.168.156.101
