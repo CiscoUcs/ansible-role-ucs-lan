@@ -10,6 +10,13 @@
       state: "{{ ucs_state }}"
 
   block:
+  - name: Configure Port Channels
+    ucs_managed_objects:
+      <<: *login_info
+      objects: "{{ item.objects }}" 
+    when: item.objects is defined
+    with_items: "{{ ucs_port_channels }}"
+
   - name: Configure Block of IPv4 Addresses for KVM Access
     ucs_ip_pool:
       <<: *login_info
